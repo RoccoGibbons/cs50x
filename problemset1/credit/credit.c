@@ -1,23 +1,43 @@
 #include <stdio.h>
 #include <math.h>
 
-int company(long card, int length);
-int luhn(long card, int length);
+int company(long long card, int length);
+int luhn(long long card, int length);
 
 int main(){
-    long card;
+    long long card;
+    
     printf("Enter your credit card number here: ");
-    scanf("%li", &card);;
+    scanf("%lli", &card);;
+
     int length = log10(card);
     length++;
-    luhn(card, length);
 
+    int valid = luhn(card, length);
+
+    if(valid == 1){
+        int comp = company(card, length);
+        if(comp == 1){
+            printf("VISA");
+        }
+        else if(comp == 2){
+            printf("MASTERCARD");
+        }
+        else if(comp == 3){
+            printf("AMERICAN EXPRESS");
+        }
+        else{
+            printf("INVALID LENGTH");
+        }
+    }
+    else{
+        printf("INVALID LUHN EQUATION");
+    }
     return 0;
 }
 
-int company(long card, int length){
-    // 0 = invalid, 1 = visa, 2  = mastercard, 3 = americanexpress
-    int first = (int)(card / pow(10, length));
+int company(long long card, int length){
+    int first = (int)(card / pow(10, length - 1));
 
     int mastercard[] = {51, 52, 53, 54, 55};
     int americanexpress[] = {34, 37};
@@ -28,7 +48,8 @@ int company(long card, int length){
             return 1;
         }
     }
-    int first2 = (int)(card / pow(10, length-1));
+
+    int first2 = (int)(card / pow(10, length-2));
 
     for(int i = 0; i < 5; i++){
         if(first2 == mastercard[i]){
@@ -46,13 +67,12 @@ int company(long card, int length){
             return 0;
         }
     }
-
     return 0;
 }
 
-int luhn(long card, int length){
+int luhn(long long card, int length){
     int array[length];
-    int tempcard = card;
+    long long tempcard = card;
     int test = 0;
 
     for(int i = 0; i < length; i++){
@@ -79,17 +99,44 @@ int luhn(long card, int length){
 
     if(odd == 1){
         for(int i = 0; i < sizeOfDoubled; i++){
-            test += doubled[i];
+            if(doubled[i] > 9){
+                test += doubled[i] % 10;
+                doubled[i] /= 10;
+                test += doubled[i];
+            }
+            else{
+                test += doubled[i];
+            }
         }
     }
     else{
         for(int i = 0; i < sizeOfDoubled-1; i++){
-            test += doubled[i];
+            if(doubled[i] > 9){
+                test += doubled[i] % 10;
+                doubled[i] /= 10;
+                test += doubled[i];
+            }
+            else{
+                test += doubled[i];
+            }
         }
-        test += array[0] * 2;
+        int x = array[0] * 2;
+        if(x > 9){
+            test += x % 10;
+            x /= 10;
+            test += x;
+        }
+        else{
+            test += array[0] * 2;
+        }
     }
-    //test equals every other number from the second to last multiplied by 2
-    
-    
+
+    for(int i = length-1; i >= 0; i-=2){
+        test += array[i];
+    }
+
+    if(test % 10 == 0){
+        return 1;
+    }
     return 0;
 }
