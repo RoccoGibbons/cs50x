@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/rocco/cs50/problemset1/credit",
-      "program": "c:/Users/rocco/cs50/problemset1/credit/build/Debug/outDebug",
+      "cwd": "c:/users/rocco/cs50/problemset2/scrabble",
+      "program": "c:/users/rocco/cs50/problemset2/scrabble/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
