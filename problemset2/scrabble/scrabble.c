@@ -1,31 +1,31 @@
 #include <stdio.h>
 
-int score(char s[]);
-void lowerCase(char s[]);
+int lowercase(char input[], int length);
+int scores(char input[], int length);
 
 int main(){
-    char player1[20];
-    char player2[20];
+    int length = 20;
+    char player1[length];
+    char player2[length];
     printf("Player1: ");
     scanf("%s", player1);
     printf("Player2: ");
     scanf("%s", player2);
 
+    int length1 = lowercase(player1, length);
+    int length2 = lowercase(player2, length);
 
-    // lowerCase(player1);
-    // lowerCase(player2);
-
-    int score1 = score(player1);
-    int score2 = score(player2);
-
+    int score1 = scores(player1, length1);
+    int score2 = scores(player2, length2);
+    
     if(score1 == score2){
         printf("Tie!\n");
     }
     else if(score1 > score2){
-        printf("Player1 wins!\n");
+        printf("Player 1 wins\n");
     }
     else if(score1 < score2){
-        printf("Player2 wins!\n");
+        printf("Player 2 wins\n");
     }
     else{
         return 1;
@@ -33,8 +33,23 @@ int main(){
     return 0;
 }
 
-int score(char s[]){
+int lowercase(char input[], int length){
+    int count = 0;
+    for(int i = 0; i < length; i++){
+        if(input[i] == '\000'){
+            return count;
+        }
+        else if(input[i] >= 65 && input[i] <= 90){
+            input[i] += 32;
+        }
+        count++;
+    }
+    return 1;
+}
+
+int scores(char input[], int length){
     int score = 0;
+
     char one[] = {'a', 'e', 'i', 'l', 'n', 'o', 'r', 's', 't', 'u'};
     char two[] = {'d', 'g'};
     char three[] = {'b', 'c', 'm', 'p'};
@@ -43,97 +58,30 @@ int score(char s[]){
     char eight[] = {'j', 'x'};
     char ten[] = {'q', 'z'};
 
-    int next = 0;
-    for(int i = 0; i < 20; i++){
-        if(s[i] == '\000'){
-            return score;
-        }
+    for(int i = 0; i < length; i++){
         for(int j = 0; j < 10; j++){
-            if(s[i] == one[j]){
+            if(input[i] == one[j]){
                 score++;
-                next = 1;
-                break;
             }
-        }
-        if(next == 1){
-            next = 0;
-            continue;
-        }
-        for(int j = 0; j < 2; j++){
-            if(s[i] == two[j]){
+            else if(input[i] == two[j]){
                 score+=2;
-                next = 1;
-                break;
             }
-        }
-        if(next == 1){
-            next = 0;
-            continue;
-        }
-        for(int j = 0; j < 4; j++){
-            if(s[i] == three[j]){
+            else if(input[i] == three[j]){
                 score+=3;
-                next = 1;
-                break;
             }
-        }
-        if(next == 1){
-            next = 0;
-            continue;
-        }
-        for(int j = 0; j < 5; j++){
-            if(s[i] == four[j]){
+            else if(input[i] == four[j]){
                 score+=4;
-                next = 1;
-                break;
             }
-        }
-        if(next == 1){
-            next = 0;
-            continue;
-        }
-        for(int j = 0; j < 1; j++){
-            if(s[i] == five[j]){
+            else if(input[i] == five[j]){
                 score+=5;
-                next = 1;
-                break;
             }
-        }
-        if(next == 1){
-            next = 0;
-            continue;
-        }
-        for(int j = 0; j < 2; j++){
-            if(s[i] == eight[j]){
+            else if(input[i] == eight[j]){
                 score+=8;
-                next = 1;
-                break;
             }
-        }
-        if(next == 1){
-            next = 0;
-            continue;
-        }
-        for(int j = 0; j < 2; j++){
-            if(s[i] == ten[j]){
+            else if(input[i] == ten[j]){
                 score+=10;
-                next = 1;
-                break;
             }
         }
     }
-    return 0;
-}
-
-void lowerCase(char s[]){
-    for(int i = 0; i < 100; i++){
-        if(s[i] == '\000'){
-            break;
-        }
-        else{
-            if(s[i] >= 65 && s[i] <= 90){
-                s[i] = s[i] + 32;
-            }
-        }
-    }
+    return score;
 }
