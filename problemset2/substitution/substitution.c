@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int lengthChecker(char plaintext[]);
-void substitution(char plaintext[], int length, char *key[]);
+void substitution(char plaintext[], int length, char key[]);
 char lower(char letter);
 char upper(char letter);
 
@@ -19,7 +19,7 @@ int main(int argc, char **argv){
 
         int length = lengthChecker(plaintext);
 
-        substitution(plaintext, length, argv);
+        substitution(plaintext, length, argv[1]);
 
     }
     return 0;
@@ -36,7 +36,7 @@ int lengthChecker(char plaintext[]){
     return -1;
 }
 
-void substitution(char plaintext[], int length, char *key[]){
+void substitution(char plaintext[], int length, char key[]){
     char ciphertext[length];
     char alphabetL[] = {"abcdefghijklmnopqrstuvwxyz"};
     char alphabetU[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
@@ -44,10 +44,15 @@ void substitution(char plaintext[], int length, char *key[]){
     for(int i = 0; i < length; i++){
         for(int j = 0; j < 27; j++){
             if(plaintext[i] == alphabetL[j]){
-                ciphertext[i] = lower(*key[j]);
+                ciphertext[i] = lower(key[j]);
+                break;
             }
             else if(plaintext[i] == alphabetU[j]){
-                ciphertext[i] = upper(*key[j]);
+                ciphertext[i] = upper(key[j]);
+                break;
+            }
+            if(j == 26){
+                ciphertext[i] = plaintext[i];
             }
         }
     }
