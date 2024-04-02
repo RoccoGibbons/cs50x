@@ -6,74 +6,129 @@ int lengthOfString(char string[]);
 void sort(int array[], int length);
 
 int main(int argc, char **argv){
-    const int votesPerVoter = 3;
-    int numberOfCandidates = argc - 1;
-    char* candidateList[numberOfCandidates];
-    int candidateScore[numberOfCandidates];
-
-    //Converts argv to more understandable variable name whilst removing ./tideman.exe
-    for(int i = 0; i < numberOfCandidates; i++){
-        candidateList[i] = argv[i+1];
-        candidateScore[i] = 0;
+    if(argc == 1){
+        printf("Usage: ./plurality [candidate ...]");
     }
+    else{
+        const int votesPerVoter = 3;
+        int numberOfCandidates = argc - 1;
+        int numberOfPairs;
+        char* candidateList[numberOfCandidates];
+        int candidateScore[numberOfCandidates];
 
-    int numberOfVoters;
-    printf("Number of voters: ");
-    scanf("%i", &numberOfVoters);
-
-    char* votes[numberOfVoters][votesPerVoter];
-    
-    //Stores all votes in a 2d array
-    for(int i = 0; i < numberOfVoters; i++){
-        for(int j = 0; j < votesPerVoter; j++){
-            char* vote;
-            vote = (char*) malloc(100);
-
-            printf("Rank %i: ", j+1);
-            scanf("%s", vote);
-
-            int length = lengthOfString(vote);
-            vote = (char*) realloc(vote, length);
-
-            votes[i][j] = vote;
+        if(numberOfCandidates == 1){
+            printf("%s", candidateList[0]);
+            return 0;
         }
-        printf("\n");
-    }
+        else{
+            //Calculation to find number of pairs depending on how many candidates there are without repeats
+            int n = numberOfCandidates - 1;
+            numberOfPairs = (0.5 * (n * n)) + (0.5 * n);
+        }
 
-    //Calculate score for each candidate
-    for(int i = 0; i < numberOfVoters; i++){
-        for(int j = 0; j < votesPerVoter; j++){
-            for(int k = 0; k < numberOfCandidates; k++){
-                if(strcmp(votes[i][j], candidateList[k]) == 0){
-                    if(j == 0){
-                        //first vote
-                        candidateScore[k] += 3;
+        char* pairsOfCandidates[numberOfPairs][2];
+
+        //Converts argv to more understandable variable name whilst removing ./tideman.exe
+        for(int i = 0; i < numberOfCandidates; i++){
+            candidateList[i] = argv[i+1];
+            candidateScore[i] = 0;
+        }
+        
+        //Puts all the candidates into pairs
+        int index1 = 0;
+        int index2 = 1;
+        for(int i = 0; i < numberOfPairs; i++){
+            pairsOfCandidates[i][0] = candidateList[index1];
+            pairsOfCandidates[i][1] = candidateList[index2];
+            if(index2 >= numberOfCandidates - 1){
+                index1++;
+                index2 = index1 + 1;
+            }
+            else{
+                index2++;
+            }
+        }
+
+        int numberOfVoters;
+        printf("Number of voters: ");
+        scanf("%i", &numberOfVoters);
+
+        char* votes[numberOfVoters][votesPerVoter];
+        
+        //Stores all votes in a 2d array
+        for(int i = 0; i < numberOfVoters; i++){
+            for(int j = 0; j < votesPerVoter; j++){
+                char* vote;
+                vote = (char*) malloc(100);
+
+                printf("Rank %i: ", j+1);
+                scanf("%s", vote);
+
+                int length = lengthOfString(vote);
+                vote = (char*) realloc(vote, length);
+
+                int validCandidate = 0;
+                for(int k = 0; k < numberOfCandidates; k++){
+                    if(strcmp(vote, candidateList[k]) == 0){
+                        validCandidate = 1;
                     }
-                    else if(j == 1){
-                        //second vote
-                        candidateScore[k] += 2;
+                }
+                if(validCandidate == 1){
+                    votes[i][j] = vote;
+                }
+                else{
+                    printf("This is not a valid candidate option\n");
+                    j--;
+                }
+            }
+            printf("\n");
+        }
+        
+        int x,y;
+        for(int i = 0; i < numberOfVoters; i++){
+            for(int j = 0; j < numberOfPairs; j++){
+                for(int k = 0; k < votesPerVoter; k++){
+                    //Find the index of each value in each pair in the user votes
+                    if(strcmp(pairsOfCandidates[j][0], votes[i][k]) == 0){
+                        x = k;
+                        break;
                     }
-                    else if(j == 2){
-                        //third vote
-                        candidateScore[k]++;
+                    if(strcmp(pairsOfCandidates[j][1], votes[i][k]) == 0){
+                        y = k;
+                        break;
+                    }
+                }
+                //The lower one the user entered first/ before other option so is preferred
+                if(x < y){
+                    for(int l = 0; l < numberOfCandidates; l++){
+                        if(strcmp(votes[i][x], candidateList[l]) == 0){
+                            candidateScore[l]++;
+                        }
+                    }
+                }
+                else if(y < x){
+                    for(int l = 0; l < numberOfCandidates; l++){
+                        if(strcmp(votes[i][y], candidateList[l]) == 0){
+                            candidateScore[l]++;
+                        }
                     }
                 }
             }
         }
-    }
 
-    int leastToMost[numberOfCandidates];
-    for(int i = 0; i < numberOfCandidates; i++){
-        leastToMost[i] = candidateScore[i];
-    }
+        int leastToMost[numberOfCandidates];
+        for(int i = 0; i < numberOfCandidates; i++){
+            leastToMost[i] = candidateScore[i];
+        }
 
-    sort(leastToMost, numberOfCandidates);
-    int biggest = leastToMost[numberOfCandidates-1];
+        sort(leastToMost, numberOfCandidates);
+        int biggest = leastToMost[numberOfCandidates-1];
 
-    //Prints candidates with highest score
-    for(int i = 0; i < numberOfCandidates; i++){
-        if(candidateScore[i] == biggest){
-            printf("%s\n", candidateList[i]);
+        //Prints candidates with highest score
+        for(int i = 0; i < numberOfCandidates; i++){
+            if(candidateScore[i] == biggest){
+                printf("%s\n", candidateList[i]);
+            }
         }
     }
     return 0;

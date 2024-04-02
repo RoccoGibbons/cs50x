@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/rocco/cs50/problemset3/plurality",
-      "program": "c:/Users/rocco/cs50/problemset3/plurality/build/Debug/outDebug",
+      "cwd": "c:/Users/rocco/cs50/problemset3/tideman",
+      "program": "c:/Users/rocco/cs50/problemset3/tideman/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
