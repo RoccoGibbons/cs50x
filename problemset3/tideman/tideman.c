@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef char* string;
-
-int lengthOfString(string myString);
+int lengthOfString(char string[]);
 void sort(int array[], int length);
 
 int main(int argc, char **argv){
@@ -15,7 +13,7 @@ int main(int argc, char **argv){
         const int votesPerVoter = 3;
         int numberOfCandidates = argc - 1;
         int numberOfPairs;
-        string candidateList[numberOfCandidates];
+        char* candidateList[numberOfCandidates];
         int candidateScore[numberOfCandidates];
 
         if(numberOfCandidates == 1){
@@ -28,7 +26,7 @@ int main(int argc, char **argv){
             numberOfPairs = (0.5 * (n * n)) + (0.5 * n);
         }
 
-        string pairsOfCandidates[numberOfPairs][2];
+        char* pairsOfCandidates[numberOfPairs][2];
 
         //Converts argv to more understandable variable name whilst removing ./tideman.exe
         for(int i = 0; i < numberOfCandidates; i++){
@@ -55,19 +53,19 @@ int main(int argc, char **argv){
         printf("Number of voters: ");
         scanf("%i", &numberOfVoters);
 
-        string votes[numberOfVoters][votesPerVoter];
+        char* votes[numberOfVoters][votesPerVoter];
         
         //Stores all votes in a 2d array
         for(int i = 0; i < numberOfVoters; i++){
             for(int j = 0; j < votesPerVoter; j++){
-                string vote;
-                vote = (string) malloc(100);
+                char* vote;
+                vote = (char*) malloc(100);
 
                 printf("Rank %i: ", j+1);
                 scanf("%s", vote);
 
                 int length = lengthOfString(vote);
-                vote = (string) realloc(vote, length);
+                vote = (char*) realloc(vote, length);
 
                 int validCandidate = 0;
                 for(int k = 0; k < numberOfCandidates; k++){
@@ -137,9 +135,9 @@ int main(int argc, char **argv){
 }
 
 //Calculates the true length of the string to remove garbage data from end
-int lengthOfString(string myString){
+int lengthOfString(char string[]){
     for(int i = 0; i <= 100; i++){
-        if(myString[i] == '\000'){
+        if(string[i] == '\000'){
             return i;
         }
     }
