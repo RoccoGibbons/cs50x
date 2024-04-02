@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-int lengthOfString(char string[]);
+typedef char* string;
+
+int lengthOfString(string myString);
 void sort(int array[], int length);
 
 int main(int argc, char **argv){
@@ -13,7 +15,7 @@ int main(int argc, char **argv){
         const int votesPerVoter = 3;
         int numberOfCandidates = argc - 1;
         int numberOfPairs;
-        char* candidateList[numberOfCandidates];
+        string candidateList[numberOfCandidates];
         int candidateScore[numberOfCandidates];
 
         if(numberOfCandidates == 1){
@@ -26,7 +28,7 @@ int main(int argc, char **argv){
             numberOfPairs = (0.5 * (n * n)) + (0.5 * n);
         }
 
-        char* pairsOfCandidates[numberOfPairs][2];
+        string pairsOfCandidates[numberOfPairs][2];
 
         //Converts argv to more understandable variable name whilst removing ./tideman.exe
         for(int i = 0; i < numberOfCandidates; i++){
@@ -53,19 +55,19 @@ int main(int argc, char **argv){
         printf("Number of voters: ");
         scanf("%i", &numberOfVoters);
 
-        char* votes[numberOfVoters][votesPerVoter];
+        string votes[numberOfVoters][votesPerVoter];
         
         //Stores all votes in a 2d array
         for(int i = 0; i < numberOfVoters; i++){
             for(int j = 0; j < votesPerVoter; j++){
-                char* vote;
-                vote = (char*) malloc(100);
+                string vote;
+                vote = (string) malloc(100);
 
                 printf("Rank %i: ", j+1);
                 scanf("%s", vote);
 
                 int length = lengthOfString(vote);
-                vote = (char*) realloc(vote, length);
+                vote = (string) realloc(vote, length);
 
                 int validCandidate = 0;
                 for(int k = 0; k < numberOfCandidates; k++){
@@ -135,9 +137,9 @@ int main(int argc, char **argv){
 }
 
 //Calculates the true length of the string to remove garbage data from end
-int lengthOfString(char string[]){
+int lengthOfString(string myString){
     for(int i = 0; i <= 100; i++){
-        if(string[i] == '\000'){
+        if(myString[i] == '\000'){
             return i;
         }
     }
