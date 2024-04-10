@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/rocco/cs50/lectures",
-      "program": "c:/Users/rocco/cs50/lectures/build/Debug/outDebug",
+      "cwd": "c:/Users/rocco/cs50/problemset5/hashTable",
+      "program": "c:/Users/rocco/cs50/problemset5/hashTable/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
