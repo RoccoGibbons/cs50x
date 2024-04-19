@@ -1,0 +1,7 @@
+Would analyse the average danceability, energy, loudness, speechiness, valence, and tempo columns
+Then use this data to decide what kind of songs they enjoy.
+
+But this could be flawed if a user listened to 30 songs on a playlist they liked often and the other 70 just happened
+to be listened to once or twice in the year.
+This would shadow out the songs the user actually liked and give equal importance to each song in the top 100
+instead of giving those at the top of the list a higher importance.
